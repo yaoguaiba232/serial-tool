@@ -1,0 +1,159 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Prevent text selection */
+* {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Allow text selection in specific elements that need it */
+input, 
+textarea,
+.messages-content,
+.messages-content * {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+/* Drag and drop related styles */
+.dragging-preset * {
+  cursor: grabbing !important;
+}
+
+.dragging-preset .preset-item {
+  opacity: 0.6;
+}
+
+/* Startup animation */
+.startup-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background-color: rgb(17 24 39);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1rem;
+  opacity: 1;
+  transition: opacity 0.5s ease-out;
+}
+
+:root.dark .startup-screen {
+  background-color: rgb(255 255 255);
+}
+
+.startup-screen.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.startup-screen .logo {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.startup-screen .loading-bar {
+  width: 200px;
+  height: 2px;
+  background: rgba(59, 130, 246, 0.2);
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+}
+
+.startup-screen .loading-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40%;
+  height: 100%;
+  background: rgb(59 130 246);
+  animation: loading 1s ease-in-out infinite;
+  border-radius: 999px;
+}
+
+:root.dark .startup-screen .loading-bar {
+  background: rgba(59, 130, 246, 0.1);
+}
+
+/* Startup messages */
+.startup-messages {
+  min-height: 120px;
+  width: 300px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+  font-family: monospace;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+:root.dark .startup-messages {
+  background: rgba(17, 24, 39, 0.05);
+}
+
+.startup-messages .message {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: message-fade-in 0.3s ease-out forwards;
+}
+
+.startup-messages .message.sent {
+  color: rgb(96 165 250);
+  justify-content: flex-end;
+}
+
+.startup-messages .message.received {
+  color: rgb(74 222 128);
+}
+
+:root.dark .startup-messages .message.sent {
+  color: rgb(59 130 246);
+}
+
+:root.dark .startup-messages .message.received {
+  color: rgb(34 197 94);
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: .8;
+    transform: scale(0.95);
+  }
+}
+
+@keyframes loading {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(350%);
+  }
+}
+
+@keyframes message-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

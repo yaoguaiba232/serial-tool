@@ -1,8 +1,6 @@
 # 串口调试工具
 
-一个基于 Electron + React + Vite 构建的现代化串口调试工具，提供直观的用户界面和强大的功能。
-
-![预览图片](./screenshots/preview.png)
+一个基于 Electron + React + TypeScript 开发的现代化串口调试工具，提供直观的用户界面和强大的功能。
 
 ## ✨ 功能特点
 
@@ -25,6 +23,20 @@
   - 可调整面板大小
   - 左右布局切换
   - 布局状态保存
+
+## 界面预览
+
+### 启动界面
+![启动界面](images/启动.jpg)
+
+### 深色主题
+![深色主题](images/黑色主题.jpg)
+
+### 浅色主题
+![浅色主题](images/浅色主题.jpg)
+
+### 设置界面
+![设置界面](images/设置.jpg)
 
 ## 🚀 快速开始
 
@@ -50,25 +62,22 @@ npm install
 
 ```bash
 # 启动开发服务器
-npm run electron:dev
+npm run dev
 ```
 
 ### 构建
 
 ```bash
 # 构建应用
-npm run electron:build
+npm run build
 ```
-
-构建后的应用将在 `release` 目录中生成。
 
 ## 🛠 技术栈
 
 - Electron - 跨平台桌面应用框架
 - React - 用户界面库
-- Vite - 构建工具
-- TailwindCSS - 样式框架
 - TypeScript - 类型安全
+- TailwindCSS - 样式框架
 - SerialPort - 串口通信库
 
 ## 📝 配置说明

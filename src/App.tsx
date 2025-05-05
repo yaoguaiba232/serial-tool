@@ -149,8 +149,35 @@ function App() {
     document.addEventListener('mouseup', handleDragEnd);
   };
 
-  const handleMouseDown = (e: React.MouseEvent) => {
+  const handleMouseDown = async (e: React.MouseEvent) => {
     if (e.target instanceof HTMLElement) {
+      const isMaximized = await window.electron.windowControl.isMaximized()
+      if (isMaximized) {
+        window.electron.windowControl.maximize()
+        // 等待一帧以确保窗口已经还原
+        await new Promise(resolve => requestAnimationFrame(resolve))
+        // 重新计算鼠标位置
+        const rect = e.target.getBoundingClientRect()
+        const x = e.clientX - rect.left
+        const y = e.clientY - rect.top
+        
+        const handleMouseMove = async (e: MouseEvent) => {
+          const isMaximized = await window.electron.windowControl.isMaximized()
+          if (!isMaximized) {
+            window.electron.windowControl.move(e.screenX - x, e.screenY - y)
+          }
+        }
+
+        const handleMouseUp = () => {
+          document.removeEventListener('mousemove', handleMouseMove)
+          document.removeEventListener('mouseup', handleMouseUp)
+        }
+
+        document.addEventListener('mousemove', handleMouseMove)
+        document.addEventListener('mouseup', handleMouseUp)
+        return
+      }
+
       const rect = e.target.getBoundingClientRect()
       const x = e.clientX - rect.left
       const y = e.clientY - rect.top
@@ -171,6 +198,10 @@ function App() {
       document.addEventListener('mouseup', handleMouseUp)
     }
   }
+
+  const handleDoubleClick = () => {
+    handleMaximize();
+  };
 
   // Create a triangle pattern with dots
   const createDotTriangle = (isLeftSide: boolean) => {
@@ -276,7 +307,11 @@ function App() {
           )}
           
           <div className="flex flex-col h-screen bg-gray-900 dark:bg-white text-white dark:text-gray-900">
-            <header className="bg-gray-800 dark:bg-gray-100 border-b border-gray-700 dark:border-gray-200 h-12 flex items-center px-3">
+            <header 
+              className="bg-gray-800 dark:bg-gray-100 border-b border-gray-700 dark:border-gray-200 h-12 flex items-center px-3"
+              onMouseDown={handleMouseDown}
+              onDoubleClick={handleDoubleClick}
+            >
               <div className="flex items-center space-x-2">
                 <Terminal className="h-5 w-5 text-blue-400 dark:text-blue-600" />
                 <h1 className="text-base font-medium">串口调试工具</h1>
